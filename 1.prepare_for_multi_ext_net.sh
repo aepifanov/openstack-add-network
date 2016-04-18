@@ -19,7 +19,7 @@ prepare_for_multi_ext_nets ()
 		LINE=$(awk '/^bridge_mappings/ {print NR}' ${L2_config_file}) 
 		sed -i "${LINE} s/$/,${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}/" ${L2_config_file}
 	else
-		sed -i "/[ovs]/a bridge_mappings=${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}" ${L2_config_file}
+		sed -i "/\[ovs\]/a bridge_mappings=${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}" ${L2_config_file}
 	fi
 
 	# 1.3 update configuration of the current external network net04_ext in DB

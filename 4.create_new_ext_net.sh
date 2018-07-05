@@ -9,6 +9,7 @@ create_new_ext_net ()
 	FIP_END=${5:?"Please specify Floating IP end of range"}
 
 	PHYSNET=physnet-${NAME}
+	NAME=ext-${NAME}
 
 	source openrc
 

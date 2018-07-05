@@ -14,12 +14,15 @@ prepare_for_multi_ext_nets ()
 	sed -i "/^external_network_bridge/c external_network_bridge =" ${L3_config_file}
 
 	# 1.2 update configuration for the defualt current external network net04_ex
-	grep "^bridge_mappings" /etc/neutron/plugins/ml2/ml2_conf.ini | grep ${DEFAULT_BR_EX}
-	if (( 0 != $? )); then
-		LINE=$(awk '/^bridge_mappings/ {print NR}' ${L2_config_file}) 
-		sed -i "${LINE} s/$/,${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}/" ${L2_config_file}
-	else
+	if ! grep -q "^bridge_mappings" ${L2_config_file}; then
+		# if there are no bridge_mappings in l2_config_file, add one
 		sed -i "/\[ovs\]/a bridge_mappings=${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}" ${L2_config_file}
+	elif ! grep "^bridge_mappings" ${L2_config_file} | grep -q ${DEFAULT_BR_EX}; then
+		# if there are bridge_mappings, but default_br_ex isn't mapped, append its mapping
+		sed -i "/^bridge_mappings/s/$/,${DEFAULT_PHYSNET}:${DEFAULT_BR_EX}/" ${L2_config_file}
+	else
+		# else, if there is a mapping for default_br_ex, do nothing
+		:
 	fi
 
 	# 1.3 update configuration of the current external network net04_ext in DB

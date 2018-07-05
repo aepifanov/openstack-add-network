@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash -x
 
 create_new_ext_net ()
 {

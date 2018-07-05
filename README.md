@@ -58,12 +58,12 @@ perform the following steps manually:
 
 3. Restart all neutron services on all nodes
     ```
-    ./restart_netutron_services DVR
+    ./3.restart_netutron_services DVR
     ```
 
 4. Create a new external network:
     ```
-    HOST=$(fuel node | awk '/controller/ { print $10 }' | head -n 1) && ssh $HOST 'bash -x -s' < ./3.create_new_ext_net.sh <NAME> <CIDR> <GATEWAY> <START_FIP_RANGE> <END_FIP_RANGE>
+    HOST=$(fuel node | awk '/controller/ { print $10 }' | head -n 1) && ssh $HOST 'bash -x -s' < ./4.create_new_ext_net.sh <NAME> <CIDR> <GATEWAY> <START_FIP_RANGE> <END_FIP_RANGE>
     ```
 
 If you need to add N ext networks you should repeat N times steps **2** and **4**.
